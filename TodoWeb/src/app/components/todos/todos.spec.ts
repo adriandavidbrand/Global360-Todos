@@ -1,8 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Todos } from './todos';
-import { provideLocationMocks } from '@angular/common/testing';
-import { ActivatedRoute, provideRouter } from '@angular/router';
-import { of } from 'rxjs';
+import { provideRouter } from '@angular/router';
 import { inputBinding } from '@angular/core';
 
 describe('Todos', () => {
@@ -13,14 +11,7 @@ describe('Todos', () => {
     await TestBed.configureTestingModule({
       imports: [Todos],
       providers: [
-        provideRouter([{ path: 'todos/2026-10-28', component: Todos }]),
-        provideLocationMocks(),
-        {
-          provide: ActivatedRoute,
-          useValue: {
-            params: of({ date: '2026-10-28' })
-          }
-        }
+        provideRouter([{ path: 'todos/2026-10-28', component: Todos }])
       ]
     }).compileComponents();
 

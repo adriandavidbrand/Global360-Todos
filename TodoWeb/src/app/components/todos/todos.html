@@ -1,0 +1,61 @@
+<p>
+  <a [routerLink]="[`../${previousDay()}`]"><<</a>
+  &nbsp;
+  <input type="date" [value]="date()" (change)="date.set($event.target.value)" />
+  &nbsp;
+  <a [routerLink]="[`../${nextDay()}`]">>></a>
+</p>
+
+@if (todosService.error()) {
+  <p class="error">There was an error communicating with the server</p>
+}
+
+<app-spinner [spinning]="todosService.loading()" text="Loading">
+  @if (todosService.todos().length === 0) {
+    <p>You have nothing planned for this day</p>
+  } @else {
+    <table>
+      <thead>
+        <th><a href="javascript:void(0)" (click)="todosService.sortByName()">Name</a></th>
+        <th><a href="javascript:void(0)"  (click)="todosService.sortByDate()">Due</a></th>
+        <th>Complete</th>
+        <th>Delete</th>
+      </thead>
+      <tbody>
+        @for (todo of todosService.todos(); track todo.id) {
+          <tr>
+            <td>
+              <input
+                type="text"
+                maxlength="256"
+                [value]="todo.name"
+                [ngClass]="{ complete: todo.complete }"
+                (change)="saveName(todo, $event.target.value)"
+              />
+            </td>
+            <td>
+              <input
+                type="time"
+                [value]="todo.date | date: 'HH:mm'"
+                (change)="saveTime(todo, $event.target.value)"
+              />
+            </td>
+            <td>
+              <input type="checkbox" [checked]="todo.complete" (change)="toggleComplete(todo)" />
+            </td>
+            <td>
+              <button type="button" (click)="idToDelete = todo.id; dialog.showModal()">X</button>
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  }
+  <button type="button" (click)="todosService.add(date())" [disabled]="unsaved()">Add</button>
+</app-spinner>
+
+<dialog id="my-dialog" #dialog>
+  <p>Are you sure you wish to delete this todo?</p>
+  <button commandfor="my-dialog" command="close" (click)="delete()">Ok</button>&nbsp;
+  <button commandfor="my-dialog" command="close">Cancel</button>
+</dialog>

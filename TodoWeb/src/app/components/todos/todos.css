@@ -1,0 +1,20 @@
+.complete {
+    text-decoration: line-through;
+}
+
+.error {
+    color: red;
+}
+
+th {
+    text-align: left;
+}
+
+input[type="text"] {
+    padding: 3px;
+    width: 400px;
+}
+
+a, a:visited {
+    color: black;
+}

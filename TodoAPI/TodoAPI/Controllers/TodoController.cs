@@ -11,7 +11,7 @@ public class TodoController(ITodoRepository repository) : ControllerBase
     private readonly ITodoRepository repository = repository;
 
     [HttpGet("{date}")]
-    public async Task<ActionResult<IEnumerable<Todo>>> GetDay(DateTime date)
+    public async Task<ActionResult<IEnumerable<Todo>>> Get(DateTime date)
     {
         return Ok(await repository.GetByDateAsync(date));
     }

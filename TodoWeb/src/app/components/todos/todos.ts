@@ -1,6 +1,6 @@
 import { DatePipe, NgClass } from '@angular/common';
 import { Component, computed, effect, inject, model } from '@angular/core';
-import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 
 import { TodoService } from '../../services/todo-service';
 import { Spinner } from '../spinner/spinner';
@@ -15,7 +15,6 @@ import { Todo } from '../../models/Todo';
   templateUrl: './todos.html',
 })
 export class Todos {
-  private route = inject(ActivatedRoute);
   private router = inject(Router);
   protected todosService = inject(TodoService);
   protected date = model.required<string>();
@@ -25,12 +24,9 @@ export class Todos {
   protected idToDelete = 0;
 
   constructor() {
-    this.route.params.subscribe(params => {
-      this.todosService.load(params['date']);
-    });
-
     effect(() => {
-      this.router.navigate(['..', this.date()], { relativeTo: this.route });
+      this.router.navigate([`/todos/${this.date()}`]);
+      this.todosService.load(this.date());
     });
   }
 
